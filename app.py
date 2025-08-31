@@ -4,6 +4,17 @@ from typing import Optional
 import streamlit as st
 from pypdf import PdfReader, PdfWriter
 
+hide_streamlit_style = """
+    <style>
+    #MainMenu {visibility: hidden;}     /* hides the hamburger menu */
+    footer {visibility: hidden;}        /* hides the Streamlit footer */
+    header {visibility: hidden;}        /* hides the header */
+    </style>
+"""
+
+st.markdown(hide_streamlit_style, unsafe_allow_html=True)
+
+
 st.set_page_config(page_title="Private PDF Unlocker", page_icon="🔓", layout="centered")
 
 st.title("🔓 Private PDF Unlocker")
