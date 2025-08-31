@@ -4,30 +4,21 @@ from typing import Optional
 import streamlit as st
 from pypdf import PdfReader, PdfWriter
 
-import streamlit as st
-
-# Hide GitHub link, toolbar, menu, header, and footer
-st.markdown("""
-    <style>
-    /* Hide Streamlit main menu, footer, and header */
-    #MainMenu {visibility: hidden;}
-    header {visibility: hidden;}
-    footer {visibility: hidden;}
-
-    /* Hide the GitHub/Created by toolbar (desktop + mobile) */
-    div[data-testid="stToolbar"] {display: none !important;}
-    div[data-testid="stDecoration"] {display: none !important;}
-
-    /* Hide any explicit GitHub link anchors */
-    a[href*="github.com"] {display: none !important;}
-    </style>
-""", unsafe_allow_html=True)
-
-
-st.markdown(hide_streamlit_style, unsafe_allow_html=True)
-
-
+# Page config should be the first Streamlit call
 st.set_page_config(page_title="Private PDF Unlocker", page_icon="🔓", layout="centered")
+
+# Hide GitHub link, toolbar, menu, header, and footer (desktop + mobile)
+HIDE_CSS = """
+<style>
+#MainMenu {visibility: hidden;}
+header {visibility: hidden;}
+footer {visibility: hidden;}
+div[data-testid="stToolbar"] {display: none !important;}
+div[data-testid="stDecoration"] {display: none !important;}
+a[href*="github.com"] {display: none !important;}
+</style>
+"""
+st.markdown(HIDE_CSS, unsafe_allow_html=True)
 
 st.title("🔓 Private PDF Unlocker")
 st.write(
@@ -44,7 +35,7 @@ with st.expander("Why is this private?"):
 
 uploaded = st.file_uploader("Upload encrypted PDF", type=["pdf"])
 password = st.text_input("PDF password", type="password")
-col1, col2 = st.columns([1,1])
+col1, col2 = st.columns([1, 1])
 
 def decrypt_pdf(data: bytes, pwd: str) -> bytes:
     bio = io.BytesIO(data)
@@ -57,7 +48,6 @@ def decrypt_pdf(data: bytes, pwd: str) -> bytes:
     writer = PdfWriter()
     for page in reader.pages:
         writer.add_page(page)
-    # Preserve metadata if present
     if reader.metadata:
         writer.add_metadata({k: v for k, v in reader.metadata.items() if isinstance(k, str)})
     out = io.BytesIO()
