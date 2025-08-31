@@ -4,13 +4,25 @@ from typing import Optional
 import streamlit as st
 from pypdf import PdfReader, PdfWriter
 
-hide_streamlit_style = """
+import streamlit as st
+
+# Hide GitHub link, toolbar, menu, header, and footer
+st.markdown("""
     <style>
-    #MainMenu {visibility: hidden;}     /* hides the hamburger menu */
-    footer {visibility: hidden;}        /* hides the Streamlit footer */
-    header {visibility: hidden;}        /* hides the header */
+    /* Hide Streamlit main menu, footer, and header */
+    #MainMenu {visibility: hidden;}
+    header {visibility: hidden;}
+    footer {visibility: hidden;}
+
+    /* Hide the GitHub/Created by toolbar (desktop + mobile) */
+    div[data-testid="stToolbar"] {display: none !important;}
+    div[data-testid="stDecoration"] {display: none !important;}
+
+    /* Hide any explicit GitHub link anchors */
+    a[href*="github.com"] {display: none !important;}
     </style>
-"""
+""", unsafe_allow_html=True)
+
 
 st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
